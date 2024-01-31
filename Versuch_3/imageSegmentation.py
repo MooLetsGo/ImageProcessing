@@ -9,7 +9,7 @@ def filter(image, classFilter):
     #classYellowMarker = (255,255,255)
 
     image2=np.zeros((height,width,3),np.uint8)
-    #Prüft Pixelweise die BGR werte. True wenn alle BGR werte im Filterbereich liegen
+    #Prüft Pixelweise die BGR werte. True wenn alle BGR werte im Filterbereich liegen -> Farbe Weiß wird diesen Pixeln zugewiesen
     image2[((classFilter[0][0] >= b)&(b >= classFilter[1][0])) & ((classFilter[0][1] >= g)&(g >= classFilter[1][1])) & ((classFilter[0][2] >= r)&(r >= classFilter[1][2]))] = (255,255,255)
     return image2
 
