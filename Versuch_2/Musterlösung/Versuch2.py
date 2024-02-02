@@ -45,6 +45,7 @@ def run(image, result,settings=None):
     max=image4[maxLoc[1],maxLoc[0]]
     print(maxLoc,max)
 
+    print(image4.shape,image4[:,:,0].shape)
     image4[:,:,0]=image4[:,:,0]/max[0]*240
     image4[:,:,1]=image4[:,:,1]/max[1]*240
     image4[:,:,2]=image4[:,:,2]/max[2]*240
@@ -52,7 +53,7 @@ def run(image, result,settings=None):
 
 
 if __name__ == '__main__':
-    image=cv2.imread("Images\Ball.jpg")
+    image=cv2.imread("..\..\Images\Farbpunkte.jpg")
     result=[]
     run(image,result)
     for ele in result:
