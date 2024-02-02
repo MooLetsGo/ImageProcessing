@@ -13,13 +13,13 @@ def run(image, result,settings=None):
     for row in range(height):
         for col in range(width):
             grey = img_normalized[row, col]#[0]
-            if 16 > row & row > 4:
-                 if width - 12 > row & row > 11:
-                    grey = 255 * (row - 12) / (width - 25)
+            if 26 > row & row > 4:
+                 if width - 12 > col & col > 11:
+                    grey = 255 * (col - 12) / (width - 25)
 
-            img_pseudo[row, col][0] = -np.sin(grey/256*2*np.pi)*127.9+128
+            img_pseudo[row, col][2] = -np.sin(grey/256*2*np.pi)*127.9+128
             img_pseudo[row, col][1] = -np.cos(grey/256*2*np.pi)*127.9+128
-            img_pseudo[row, col][2] =  np.sin(grey/256*2*np.pi)*127.9+128
+            img_pseudo[row, col][0] =  np.sin(grey/256*2*np.pi)*127.9+128
     
     result.append({"name":"PseudoColor","data":img_pseudo})
 
