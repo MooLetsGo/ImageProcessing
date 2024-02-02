@@ -4,7 +4,7 @@ import cv2
 def run(image, result,settings=None):
     
     blue,green,red=cv2.split(image)
-    
+        
     lowest=np.min(red)
     highest=np.max(red)
     #redSpread ist eine Matrix, bei der die Werte von lowest und highest gemäß der Verrechnung
@@ -20,7 +20,7 @@ def run(image, result,settings=None):
     lowest=np.min(blue)
     highest=np.max(blue)
     blueSpread = ((blue-lowest)/(highest-lowest))
-
+    
     image4=cv2.merge((blueSpread,greenSpread,redSpread))
     result.append({"name":"Spreaded","data":image4})
 

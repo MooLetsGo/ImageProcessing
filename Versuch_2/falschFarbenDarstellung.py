@@ -13,8 +13,8 @@ def run(image, result,settings=None):
     for row in range(height):
         for col in range(width):
             grey = img_normalized[row, col]#[0]
-            if 16 > row and row > 4:
-                 if width - 12 > row and row > 11:
+            if 16 > row & row > 4:
+                 if width - 12 > row & row > 11:
                     grey = 255 * (row - 12) / (width - 25)
 
             img_pseudo[row, col][0] = -np.sin(grey/256*2*np.pi)*127.9+128
