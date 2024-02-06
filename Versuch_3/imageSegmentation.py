@@ -8,9 +8,9 @@ def filter(image, classFilter, classFarbe):
    
     image2=np.zeros((height,width,3),np.uint8)
     #Prüft Pixelweise die BGR werte. True wenn alle BGR werte im Filterbereich liegen -> Farbe Weiß wird diesen Pixeln zugewiesen
-    image[((classFilter[0][0] >= b)&(b >= classFilter[1][0])) & ((classFilter[0][1] >= g)&(g >= classFilter[1][1])) & ((classFilter[0][2] >= r)&(r >= classFilter[1][2]))] = classFarbe
+    image2[((classFilter[0][0] >= b)&(b >= classFilter[1][0])) & ((classFilter[0][1] >= g)&(g >= classFilter[1][1])) & ((classFilter[0][2] >= r)&(r >= classFilter[1][2]))] = classFarbe
     
-    return image
+    return image2
 
 def run(image, result,settings=None):
     
@@ -33,7 +33,7 @@ def run(image, result,settings=None):
     klasseGrün = (0,255,0)
     klasseHintergrund = (255,255,255)
 
-    
+        
     result.append({"name":"Filter Gelb","data":filter(image,filterYellow, klasseGelb)})
     result.append({"name":"Filter Blau","data":filter(image,filterBlue, klasseBlau)})
     result.append({"name":"Filter Orange","data":filter(image,filterOrange, klasseOrange)})
@@ -41,7 +41,8 @@ def run(image, result,settings=None):
     result.append({"name":"Filter Grün","data":filter(image,filterGrün, klasseGrün)})
     result.append({"name":"Filter Hintergrund","data":filter(image,filterHintergrund, klasseHintergrund)})
 
-    #result.append({"name":"Filter Alle 6 Klassen","data":filter(filter(filter(filter(filter(filter(image,filterYellow, klasseGelb),filterBlue, klasseBlau),filterOrange, klasseOrange),filterRot, klasseRot),filterGrün, klasseGrün),filterHintergrund, klasseHintergrund)})
+    all=filter(image,filterYellow, klasseGelb)+filter(image,filterBlue, klasseBlau)+filter(image,filterOrange, klasseOrange)+filter(image,filterRot, klasseRot)+filter(image,filterGrün, klasseGrün)+filter(image,filterHintergrund, klasseHintergrund)
+    result.append({"name":"Filter Alle 6 Klassen","data":all})
 
 if __name__ == '__main__':
     image=cv2.imread("Images\Farbpunkte.jpg")
