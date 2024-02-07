@@ -41,8 +41,8 @@ def winkel(konturpixel,xs,ys):
     else:
         return np.arctan2(gk,ak)
 
-
-
+#----------------------------------------------------------------------------------------------------------#
+    
 def run(image, result,settings=None):
 #Segmentierung
     imageGrey = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
