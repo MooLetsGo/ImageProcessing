@@ -19,7 +19,6 @@ def run(image, result,settings=None):
     contoursgood=[]
     i=0
     for c in contours:
-        print(len(c))
         if len(c) >60:
             contoursgood.append(c)
         i +=1
