@@ -13,14 +13,6 @@ def momentBerechnung(ohm,i,j):
         moment += (x**i)*(y**j)
     return moment
 
-def zentralmomentBerechnung(ohm,i,j,xs,ys):
-    zentralmoment = 0
-    for konturpixel in ohm:
-        x = konturpixel[0][0]
-        y = konturpixel[0][1]
-        zentralmoment += ((x-xs)**i)*((y-ys)**j)
-    return zentralmoment
-
 #Hilfsfunktionen für die Polarkoordinaten Berechnung
 def radius(konturpixel,xs,ys):
     x = konturpixel[0][0]
@@ -31,15 +23,8 @@ def winkel(konturpixel,xs,ys):
     x = konturpixel[0][0]
     y = konturpixel[0][1]
     gk = (y-ys)
-    ak = (x-xs)
-    if ak<0 and gk<0:
-        return np.pi + np.arctan2(gk,ak)
-    elif ak<0 and gk>0:
-        return np.pi + np.arctan2(gk,ak)
-    elif ak>0 and gk>0:
-        return np.pi + np.arctan2(gk,ak)
-    else:
-        return np.arctan2(gk,ak)
+    ak = (x-xs) 
+    return np.arctan2(gk,ak)
 
 #----------------------------------------------------------------------------------------------------------#
     
@@ -47,9 +32,7 @@ def run(image, result,settings=None):
 #Segmentierung
     imageGrey = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     _,thresh1 = cv2.threshold(imageGrey,10,255,cv2.THRESH_BINARY)
-    contours,_ = cv2.findContours(thresh1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    imageSegmented = cv2.drawContours(np.copy(image), contours, -1, (0,255,0), 2)
-    
+    contours,_ = cv2.findContours(thresh1, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)  
     
 #Schwerpunktbestimmung mit normalen Momenten für den ersten Blob im contours-Array
     ohm=contours[0]
@@ -65,20 +48,14 @@ def run(image, result,settings=None):
     #imgSpMitMoment[int(ys),int(xs)]=[0,0,255]
     #result.append({"name":"SpMitMoment","data":imgSpMitMoment})
 
-#Schwerpunktbestimmung mit Zentralmomenten für den ersten Blob im contours-Array ???--Geht noch nicht--???
-    zm00 = zentralmomentBerechnung(ohm,0,0,xs,ys)
-    zm10 = zentralmomentBerechnung(ohm,1,0,xs,ys)
-    zm01 = zentralmomentBerechnung(ohm,0,1,xs,ys)
-    zmYs=zm01/zm00
-    zmXs=zm10/zm00
-
 #Konturverlauf in Polarkoordinatendarstellung um den Schwerpunkt des ersten Blobs im contours-Array
-    xVerlauf = np.zeros(len(ohm))
-    for i, konturpixel in enumerate(ohm):
+    bins=80
+    Verlauf = np.ones(bins)*(-1)
+    for _, konturpixel in enumerate(ohm):
         r = radius(konturpixel, xs, ys) 
         phi = winkel(konturpixel, xs, ys)
-        xVerlauf[i] = r * np.cos(phi)
-    result.append({"name":"Plot","data":xVerlauf})
+        Verlauf[int((phi/np.pi+1)*(bins*0.99999)/2)] = r
+    result.append({"name":"Plot","data":Verlauf})
     
 
 
