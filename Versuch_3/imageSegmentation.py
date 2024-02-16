@@ -45,7 +45,7 @@ def run(image, result,settings=None):
     result.append({"name":"Filter Alle 6 Klassen","data":all})
 
 if __name__ == '__main__':
-    image=cv2.imread("Images\Farbpunkte.jpg")
+    image=cv2.imread("..\Images\Farbpunkte.jpg")
     result=[]
     run(image,result)
     for ele in result:

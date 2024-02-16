@@ -28,6 +28,7 @@ def run(image, result,settings=(5,50)):
   
 
   train = rows[:,0:2].astype(np.float32) 
+
   response= rows[:,2].astype(int) 
 
   svm.train(train, cv2.ml.ROW_SAMPLE, response)
