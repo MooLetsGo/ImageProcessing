@@ -49,14 +49,19 @@ def run(image, result,settings=(2,50)):
     imageGrey = cv2.cvtColor(np.copy(ergColor), cv2.COLOR_RGB2GRAY)
     _,thresh1 = cv2.threshold(imageGrey,80,255,cv2.THRESH_BINARY) 
     contours,_ = cv2.findContours(thresh1, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    contoursgood=[]
-    for c in contours:
-        if cv2.contourArea(c) > 250000:
-            contoursgood.append(c)
+    #contoursgood=[]*1
+    #print(contoursgood)
+    #maxArea = 0
+    #for c in contours:
+    #    if cv2.contourArea(c) > maxArea:
+    #        contoursgood.append(c)
+    #        maxArea = cv2.contourArea(c)
+    contoursgood = max(contours, key = cv2.contourArea)
     imageDrawnCont = cv2.drawContours(np.copy(image), contoursgood, -1, (0,255,0), 2)
     result.append({"name":"KonturenAufPcb","data":imageDrawnCont})
 
-    rect = cv2.minAreaRect(contoursgood[0])
+    rect = cv2.minAreaRect(contoursgood)
+    print(rect)
     box = cv2.boxPoints(rect)
     box = np.int0(box)
     imageRect = cv2.drawContours(np.copy(image), [box], -1, (0,255,0), 2)
@@ -72,4 +77,74 @@ def run(image, result,settings=(2,50)):
     Mat = cv2.getRotationMatrix2D(center,angle,scale)
     rotated_blob = cv2.warpAffine(imageRect, Mat, (width, height))
 
+
     result.append({"name": "rotated_blob","data": rotated_blob})
+
+    #---------------------Rechteck größer machen ------------------------------#
+    #Kontur neu finden, um die neuen boxPunkte des Rechecks zu bekommen
+    rows = np.vstack((rows,np.array((0, 255,  0),dtype=np.float32)))#grünes kleines Rechteck
+
+    erg2 = svm.predict(rotated_blob.reshape(height*width,3).astype(np.float32))
+    erg2= erg2[1].reshape(height,width).astype(np.uint8)
+    ergColor2=np.zeros((height,width,3)).astype(np.uint8)
+    #Farbbilderstellung
+    ergColor2[erg2==1]=(0,0,0)
+    ergColor2[erg2==0]=(255,255,0)
+    erg2 = erg2.reshape(height,width)/5.01
+    result.append({"name":"Ergebnis2Svm","data":erg2})
+
+    imageGrey2 = cv2.cvtColor(np.copy(ergColor2), cv2.COLOR_RGB2GRAY)
+    _,thresh2 = cv2.threshold(imageGrey2,80,255,cv2.THRESH_BINARY) 
+    contours2,_ = cv2.findContours(thresh2, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    #contoursgood2=[]
+    #maxArea2 = 0
+    #for c in contours2:
+    #    if cv2.contourArea(c) > maxArea2:
+    #        contoursgood2.append(c)
+    #        maxArea2 = cv2.contourArea(c)
+    contoursgood2 = max(contours2, key = cv2.contourArea)
+    rect2 = cv2.minAreaRect(contoursgood2)
+    box2 = cv2.boxPoints(rect2)
+    box2 = np.int0(box2)
+
+    ##Min1 und Min2 braucht man nur, da es bei manchen Bildern leichte Abweichungen im Y-Wert gibt (Rechteck nicht ganz gerade)
+    #Y-Koordinaten der Eckpunkte extrahieren
+    box2Y = np.copy(box2[:,1])
+    #Ersten Minimalen Y Wert bestimmen
+    i = 1
+    for v in box2Y:
+         if i == 1:
+              min1 = v
+              posMin1 = i-1
+         elif v < min1:
+              min1 = v
+              posMin1 = i-1
+         i += 1
+    box2Y[posMin1] += 50
+    #Zweiten minimalen Y Wert bestimmen
+    i = 1
+    for v in box2Y:
+         if i == 1:
+              min2 = v
+         elif v < min2:
+              min2 = v
+         i += 1            
+
+    #Die Minimalen Y Koordinaten um -150 verschieben (Rechteck nach oben strecken damit auch die Pins
+    # mit eingeschlossen werden)
+    for index1 in range(len(box2)):
+         for index2 in range(len(box2[index1])):
+              if box2[index1][index2] == min1 or box2[index1][index2] == min2:#Toleranz +- 
+                   box2[index1][index2] -= 150      
+    
+    imageRect2 = cv2.drawContours(np.copy(rotated_blob), [box2], -1, (0,255,0), 2)
+    result.append({"name":"RechteckUmPcbGesamt","data":imageRect2})
+
+    #numby crop mit Punkten von box 2
+
+    #--------------------Summe x und y------------------#
+    sumbox2 = []
+    for i in box2:
+         sumbox2.append(i[0]+i[1])
+    print(sumbox2)
+    
