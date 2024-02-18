@@ -157,7 +157,10 @@ def run(image, result,settings=(2,50)):
      #[ 219  171]
      #[1184  172]
      #[1184  747]]
-
+    src = shiftRot_blob[170:760,215:1190]
+    pcbCutout = np.zeros((height,width,3)).astype(np.uint8)
+    pcbCutout=cv2.resize(src,(975,590),interpolation=cv2.INTER_AREA)
+    result.append({"name":"PcbCoutout","data":pcbCutout})
      
     
     
