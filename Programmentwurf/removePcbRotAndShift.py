@@ -20,12 +20,14 @@ def run(image, result,settings=(2,50)):
     
     rows=np.array((154, 101,  10),dtype=np.float32)#hellblau
     rows = np.vstack((rows,np.array((73, 42,  9),dtype=np.float32)))#dunkelblau
+    
 
     rows = np.vstack((rows,np.array((28,36,36),dtype=np.float32)))#schwarz
     rows = np.vstack((rows,np.array((53, 150, 146),dtype=np.float32)))#hellgrau
     rows = np.vstack((rows,np.array(image[160,613],dtype=np.float32)))#dunkelgrau im Hintergrund
     rows = np.vstack((rows,np.array((162, 217, 255),dtype=np.float32)))#gelb auf Widerständen
     rows = np.vstack((rows,np.array((242, 249, 252),dtype=np.float32)))#weiß Platinenrand
+    
     
     train = rows
     response= np.array([0,0,1,1,1,1,1]).astype(int) 
@@ -61,7 +63,6 @@ def run(image, result,settings=(2,50)):
     result.append({"name":"KonturenAufPcb","data":imageDrawnCont})
 
     rect = cv2.minAreaRect(contoursgood)
-    print(rect)
     box = cv2.boxPoints(rect)
     box = np.int0(box)
     imageRect = cv2.drawContours(np.copy(image), [box], -1, (0,255,0), 2)
@@ -69,22 +70,28 @@ def run(image, result,settings=(2,50)):
     
     #--------------------------Rotation entfernen-----------------------------#
 
-    center = rect[0]       
+    center = rect[0]     
     angle = rect[2]     
     if angle > 45:
         angle = -90+angle
     scale = 1
-    Mat = cv2.getRotationMatrix2D(center,angle,scale)
-    rotated_blob = cv2.warpAffine(imageRect, Mat, (width, height))
+    rotMat = cv2.getRotationMatrix2D(center,angle,scale)
+    rotated_blob = cv2.warpAffine(image, rotMat, (width, height))
 
 
     result.append({"name": "rotated_blob","data": rotated_blob})
 
+    #-------------------------Verschiebung entfernen-------------------------#
+    shiftMat = np.array([1, 0, width/2-center[0], 0, 1, height/2-center[1]], dtype=np.float64).reshape(2, 3)
+    #shiftMat = cv2.matFromArray(2, 3, cv2.CV_64FC1, [1, 0, 128-center[0], 0, 1, 128-center[1]])
+    shiftRot_blob = cv2.warpAffine(rotated_blob, shiftMat, (width, height))
+    result.append({"name": "shiftedAndRotated_blob","data": shiftRot_blob})
+
     #---------------------Rechteck größer machen ------------------------------#
     #Kontur neu finden, um die neuen boxPunkte des Rechecks zu bekommen
-    rows = np.vstack((rows,np.array((0, 255,  0),dtype=np.float32)))#grünes kleines Rechteck
+    #rows = np.vstack((rows,np.array((0, 255,  0),dtype=np.float32)))#grünes kleines Rechteck
 
-    erg2 = svm.predict(rotated_blob.reshape(height*width,3).astype(np.float32))
+    erg2 = svm.predict(shiftRot_blob.reshape(height*width,3).astype(np.float32))
     erg2= erg2[1].reshape(height,width).astype(np.uint8)
     ergColor2=np.zeros((height,width,3)).astype(np.uint8)
     #Farbbilderstellung
@@ -136,15 +143,21 @@ def run(image, result,settings=(2,50)):
          for index2 in range(len(box2[index1])):
               if box2[index1][index2] == min1 or box2[index1][index2] == min2:#Toleranz +- 
                    box2[index1][index2] -= 150      
-    
-    imageRect2 = cv2.drawContours(np.copy(rotated_blob), [box2], -1, (0,255,0), 2)
+     
+     #Alternativer Ansatz von David
+     #sumbox2 = []
+     #for i in box2:
+     #     sumbox2.append(i[0]+i[1])
+    print(box2)
+    imageRect2 = cv2.drawContours(np.copy(shiftRot_blob), [box2], -1, (0,255,0), 2)
     result.append({"name":"RechteckUmPcbGesamt","data":imageRect2})
 
-    #numby crop mit Punkten von box 2
+    #------------------------PCB Bereich ausschneiden----------------------#
+    #[[ 219  747]
+     #[ 219  171]
+     #[1184  172]
+     #[1184  747]]
 
-    #--------------------Summe x und y------------------#
-    sumbox2 = []
-    for i in box2:
-         sumbox2.append(i[0]+i[1])
-    print(sumbox2)
+     
+    
     
