@@ -1,0 +1,10 @@
+-Variablennamen passend umbenennen
+-Lösung für umgedrehte pcb Bilder (passende Rotation/ passender Ausschnitt)
+-Lösung für reingezoomte Bilder (anomaly 53-59) (passender Ausschnitt/ pinExtra Anpassung)
+-Alle Bilder durchlaufen und auf Errors checken
+-Aufteilung in Trainings und Testdaten
+
+
+
+nützliche Links:
+https://docs.opencv.org/4.x/dd/d52/tutorial_js_geometric_transformations.html

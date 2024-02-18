@@ -18,16 +18,22 @@ def run(image, result,settings=(2,50)):
     
     rows=np.array((154, 101,  10),dtype=np.float32)#hellblau
     rows = np.vstack((rows,np.array((73, 42,  9),dtype=np.float32)))#dunkelblau
+    #Die weiße Farbe hier noch mit rein zu nehmen hat den Vorteil, dass shortSide und longSide nich mehr hochskaliert werden müssen,
+    #da so der Auschnitt schon automatisch den weißen Rand der PCBs miteinbezieht
+    #Nachteile: Rechteck schließt manchmal auch Teile der Pins mit ein -> pinExtra Faktor muss abhängig von der shortSide Länge des 
+    #Rechecks berechnet werden; Rotationskorrektur stimmt manchmal nicht, da durch die teilweise vorhandenen weißen Absätze am
+    #Rand der Platine das Recheck nicht parallel zum pcb liegt 
+    rows = np.vstack((rows,np.array((255, 255,  254),dtype=np.float32)))#weiß Platinenbeschriftung
     
 
     rows = np.vstack((rows,np.array((28,36,36),dtype=np.float32)))#schwarz
     rows = np.vstack((rows,np.array((53, 150, 146),dtype=np.float32)))#hellgrau
     rows = np.vstack((rows,np.array(image[160,613],dtype=np.float32)))#dunkelgrau im Hintergrund
     rows = np.vstack((rows,np.array((162, 217, 255),dtype=np.float32)))#gelb auf Widerständen
-    rows = np.vstack((rows,np.array((242, 249, 252),dtype=np.float32)))#weiß Platinenrand
+    #rows = np.vstack((rows,np.array((242, 249, 252),dtype=np.float32)))#weiß Platinenrand
     
     train = rows
-    response= np.array([0,0,1,1,1,1,1]).astype(int) 
+    response= np.array([0,0,0,1,1,1,1]).astype(int) 
   
     svm.train(train, cv2.ml.ROW_SAMPLE, response)
     
@@ -84,16 +90,17 @@ def run(image, result,settings=(2,50)):
          (longSide, shortSide) = (shortSide, longSide)
 
     #Eventuelle anpassung der Seitenlängen, da die generierten Rechtecke nicht bei jedem Bild gleich sind
-    shortSide = 1.05*shortSide
-    longSide = 1.05*longSide
+    #shortSide = 1.05*shortSide
+    #longSide = 1.02*longSide
          
     #Da das Recheck nicht die Pins mit einschließt muss hier ein Korrekturwert festgelegt werden
-    pinExtra = 130
+    maxShortSide = 580 #580 wurde durch ausprobieren ermittelt -> Länge shortSide von einem Recheck das gut an die Kontur des PCB passt; pi mal Daumen 150 draufaddiert -> 580 war das Ergebnis
+    pinExtra = int(maxShortSide - shortSide)
     #Ausschnitt an der richtigen Stelle setzen (shiftRot_blob[erste Reihe:letzteReihe, erste Spalte:letzte Spalte])
     src = shiftRot_blob[(int(height/2)-int(shortSide/2))-pinExtra:int(height/2)+int(shortSide/2),int(width/2)-int(longSide/2):int(width/2)+int(longSide/2)]
-    #Resize, damit alle Ausschnitte die gleiche Größe haben; Eigentlich kann man dann den Ausschnitt auch gleich hartkodieren -> die 1010 und 575 sind halt Werte, die einmal
+    #Resize, damit alle Ausschnitte die gleiche Größe haben; Eigentlich kann man dann den Ausschnitt auch gleich hartkodieren -> die 1010 und 580 sind halt Werte, die einmal
     #berechnet wurden aber dann eigentlich für alle Bilder angewendet werden können
-    pcbCutout = cv2.resize(src,(1010,575),interpolation=cv2.INTER_NEAREST)
+    pcbCutout = cv2.resize(src,(1010,580),interpolation=cv2.INTER_NEAREST)
 
     result.append({"name":"PcbCoutout","data":pcbCutout})
 
