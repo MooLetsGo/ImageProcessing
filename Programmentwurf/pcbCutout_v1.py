@@ -82,12 +82,18 @@ def run(image, result,settings=(2,50)):
     longSide = np.sqrt((c**2)+(d**2))
     if shortSide > longSide:
          (longSide, shortSide) = (shortSide, longSide)
+
+    #Eventuelle anpassung der Seitenlängen, da die generierten Rechtecke nicht bei jedem Bild gleich sind
     shortSide = 1.05*shortSide
     longSide = 1.05*longSide
+         
     #Da das Recheck nicht die Pins mit einschließt muss hier ein Korrekturwert festgelegt werden
-    pinExtra = 150
+    pinExtra = 130
     #Ausschnitt an der richtigen Stelle setzen (shiftRot_blob[erste Reihe:letzteReihe, erste Spalte:letzte Spalte])
-    pcbCutout = shiftRot_blob[(int(height/2)-int(shortSide/2))-pinExtra:int(height/2)+int(shortSide/2),int(width/2)-int(longSide/2):int(width/2)+int(longSide/2)]
+    src = shiftRot_blob[(int(height/2)-int(shortSide/2))-pinExtra:int(height/2)+int(shortSide/2),int(width/2)-int(longSide/2):int(width/2)+int(longSide/2)]
+    #Resize, damit alle Ausschnitte die gleiche Größe haben; Eigentlich kann man dann den Ausschnitt auch gleich hartkodieren -> die 1010 und 575 sind halt Werte, die einmal
+    #berechnet wurden aber dann eigentlich für alle Bilder angewendet werden können
+    pcbCutout = cv2.resize(src,(1010,575),interpolation=cv2.INTER_NEAREST)
 
     result.append({"name":"PcbCoutout","data":pcbCutout})
 
