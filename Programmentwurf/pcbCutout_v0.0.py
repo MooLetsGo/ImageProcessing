@@ -83,7 +83,6 @@ def run(image, result,settings=(2,50)):
 
     #-------------------------Verschiebung entfernen-------------------------#
     shiftMat = np.array([1, 0, width/2-center[0], 0, 1, height/2-center[1]], dtype=np.float64).reshape(2, 3)
-    #shiftMat = cv2.matFromArray(2, 3, cv2.CV_64FC1, [1, 0, 128-center[0], 0, 1, 128-center[1]])
     shiftRot_blob = cv2.warpAffine(rotated_blob, shiftMat, (width, height))
     result.append({"name": "shiftedAndRotated_blob","data": shiftRot_blob})
 
@@ -157,9 +156,7 @@ def run(image, result,settings=(2,50)):
      #[ 219  171]
      #[1184  172]
      #[1184  747]]
-    src = shiftRot_blob[170:760,215:1190]
-    pcbCutout = np.zeros((height,width,3)).astype(np.uint8)
-    pcbCutout=cv2.resize(src,(975,590),interpolation=cv2.INTER_AREA)
+    pcbCutout = shiftRot_blob[170:760,215:1190] #Hartkodiert, mit den Eckpunkten von box2 als Referenzwerten
     result.append({"name":"PcbCoutout","data":pcbCutout})
      
     
