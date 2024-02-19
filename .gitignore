@@ -1,0 +1,7 @@
+/Images
+/Programmentwurf/Lernen
+/Programmentwurf/Testen
+/Programmentwurf/Ausprobieren
+*__pycache__
+*ImageProcessingGUI.py
+*.json
