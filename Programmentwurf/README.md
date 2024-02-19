@@ -16,9 +16,7 @@ In der "ToDo.txt" stehen Punkte, die noch nicht funktionieren.
 
 #### Grobe Beschreibung des Entwicklungsverlaufs / Dokumentation:
 
-Dokumentation Bildverarbeitung Gruppe: Konrad, Thesing, Gütermann
-
-Bei der Abgabe sind kommentierte Vorgänger-Programme enthalten, an denen der Arbeitsverlauf beobachtet werden kann.
+Anahnd der Programme in verschiedenen Versionen die hier abliegen, kann der Arbeitsverlauf nachvollzogen werden.
 
 ##### Zusammenfassend:
 
@@ -47,7 +45,8 @@ Bei der Abgabe sind kommentierte Vorgänger-Programme enthalten, an denen der Ar
 
 ##### Weitere Probleme und Lösungsansätze:
 
-- Da auf einigen Bildern die Pins nicht erkannt werden, werden Grenzwerte für die Bildgröße bestimmt, mit denen sich das aus der Kontur ergebende Bild angepasst wird.
-- Einige Konturen sind noch unsauber wegen Erkennungsproblemen am Rand.
-- Fallunterscheidung für Erkennung mit Rand und ohne abhängig von der Konturgröße.
-- Pins zeigen nach unten: Wenn die Pins nach unten zeigen und von der Konturanalyse nicht erkannt werden, steht das Bild auf dem Kopf, da es nur nach oben an die Bildgröße angepasst wird. Überlegung: Pins müssen irgendwie erkannt werden.
+- Umgedrehte pcb Bilder (anomaly Bilder 40,41,46,47) (passende Rotation/ passender Ausschnitt) Überlegung: Pins müssen irgendwie erkannt werden.
+- Reingezoomte Bilder (anomaly Bilder 53-59) (passender Ausschnitt/ pinExtra Anpassung)
+- PCB mit weißen Kratzern (anomaly Bild 92) (Wird falsch Ausgeschnitten, da Weiße Bereiche nicht der Kontur zugeordnet werden)
+- Einige Konturen sind noch unsauber wegen Erkennungsproblemen/ Erhöhungen am Rand.
+ 
