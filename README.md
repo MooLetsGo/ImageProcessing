@@ -21,8 +21,10 @@ Rotationswinkel mit if angle > 45: angle -= 90 angleichen funktioniert
 
 3.
 Konturanalyse mit SVM funktioniert besser
+Binärbild aus SVM wird direkt für die Konturanalyse verwendet d.h. keine threshold mehr
 Rotitaion und Verschiebung rausnehmen funktioniert
-Da auf einigen Bildern die Pins nicht erkannt werden werden Grenzwerte für die Bildgröße bestimmt mit denen sich das aus der Kontur ergebende Bild angepasst wird
+
+Da auf einigen Bildern die Pins nicht erkannt werden, werden Grenzwerte für die Bildgröße bestimmt mit denen, sich das aus der Kontur ergebende Bild, angepasst wird
 
 Probleme: einige Konturen noch unsauber wegen Erkennungsproblemen am Rand
 Lösungsansatz: Fallunterscheidung für Erkennung mit Rand und ohne aghängig von der Konturgröße
