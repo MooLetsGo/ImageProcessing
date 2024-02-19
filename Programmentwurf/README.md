@@ -8,6 +8,6 @@ Anwendung des generateTrainingdata Programms:
 2. Programm starten
 3. Hoffen, dass alles funktioniert
 
-Für die Abgabe schaue ich nochmal alles durch (Vllt kriegen wir die ToDos ja auch noch hin) und erstelle eine extra Datei und lade die hoch (Einmal mit und einmal ohne Kommentare).
+Für die Abgabe schaue ich nochmal alles durch (Vllt kriegen wir die ToDos ja auch noch hin) und erstelle eine extra Datei und lade die hier auch hoch (Einmal mit und einmal ohne Kommentare).
 
 In der ToDo.txt stehen Sachen die noch nicht funktionieren :( bzw. was noch gemacht werden muss  
