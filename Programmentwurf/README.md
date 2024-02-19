@@ -1,47 +1,51 @@
-Im Ordner CutoutFunktionen liegen die Programme welche für die Erstellung des passenden PCB Bildausschnittes verwendet werden
+# CutoutFunktionen
 
-Das generateTrainingdata Programm verwendet die aktuellste Cutout Funktion um einen Trainingsdatensatz aus den pcb2 Bildern zu erstellen
-(Aktuell ist ein Schleifendurchlauf in der Hilfsfunktion "cutoutPcb" im "generateTrainingdata" Programm noch auf 30 limitiert -> Um einen Trainingsdatensatz aus allen Bildern zu erstellen eine der beiden "abgabe" Programme verwenden)
+Im Ordner "CutoutFunktionen" liegen die Programme, die zur Erstellung des passenden PCB-Bildausschnitts verwendet werden.
 
-Anwendung des generateTrainingdata Programms:
-1. Pfade an eigene Umgebung anpassen
-2. Programm starten
-3. Hoffen, dass alles funktioniert
+Das Programm "generateTrainingdata" nutzt die aktuellste Cutout-Funktion, um einen Trainingsdatensatz aus den "pcb2"-Bildern zu erstellen. Aktuell ist ein Schleifendurchlauf in der Hilfsfunktion "cutoutPcb" im Programm "generateTrainingdata" noch auf 30 limitiert. Um einen Trainingsdatensatz aus allen Bildern zu erstellen, verwenden Sie eines der "abgabe"-Programme.
 
-In der ToDo.txt stehen Sachen die nicht funktionieren :(  
+## Anwendung des "generateTrainingdata" Programms:
 
-----------------------------------------------------------------
+1. Pfade an die eigene Umgebung anpassen.
+2. Programm starten.
+3. Hoffen, dass alles funktioniert.
 
-Ansonsten grobe Beschreibung Entwicklungsverlauf/ Dokumentation:
+In der "ToDo.txt" stehen Punkte, die noch nicht funktionieren.
 
-Dokumentation Bildverabeitung Gruppe: Konrad, Thesing, Gütermann
+### Grobe Beschreibung des Entwicklungsverlaufs / Dokumentation:
 
-Bei der Abgabe sind kommentierte Vorgänger-Programme von uns dabei an denen man den Arbeitsverlauf beobachten kann
+Dokumentation Bildverarbeitung Gruppe: Konrad, Thesing, Gütermann
 
-Zusammenfassend:
+Bei der Abgabe sind kommentierte Vorgänger-Programme enthalten, an denen der Arbeitsverlauf beobachtet werden kann.
 
-1.
-Erstellung des Binärblid zur Konturenanalyse mit cv2.threshold
-Filtern nach größter Kontur
-Erstellung eines Rechtecks um Kontur der Paltine mit cv2.minAreaRect
-Rotieren 
+#### Zusammenfassend:
 
-Probleme: nicht bei allen Bilder wurden die richtigen Konturen erfasst bzw. falsches Rechteck; Rotation zur falschen Seite
-Lösungsansatz: Konturanalyse verbessern mit Kontrasrterhöhung oder SVM; Rotationswinkel angleichen
+- Erstellung des Binärbilds zur Konturenanalyse mit "cv2.threshold".
+- Filtern nach größter Kontur.
+- Erstellung eines Rechtecks um die Kontur der Platine mit "cv2.minAreaRect".
+- Rotieren.
 
-2.
-Konturanalyse mit Kontrasterhöung eher semi erfolgreich
-Rotationswinkel mit if angle > 45: angle -= 90 angleichen funktioniert
+#### Probleme:
 
-3.
-Konturanalyse mit SVM funktioniert besser
-Binärbild aus SVM wird direkt für die Konturanalyse verwendet d.h. keine threshold mehr
-Rotitaion und Verschiebung rausnehmen funktioniert
+- Nicht bei allen Bildern wurden die richtigen Konturen erfasst bzw. das falsche Rechteck.
+- Rotation zur falschen Seite.
 
-Da auf einigen Bildern die Pins nicht erkannt werden, werden Grenzwerte für die Bildgröße bestimmt mit denen, sich das aus der Kontur ergebende Bild, angepasst wird
+#### Lösungsansätze:
 
-Probleme: einige Konturen noch unsauber wegen Erkennungsproblemen am Rand
-Lösungsansatz: Fallunterscheidung für Erkennung mit Rand und ohne aghängig von der Konturgröße
+- Konturanalyse verbessern mit Kontrasterhöhung oder SVM.
+- Rotationswinkel angleichen.
 
-Problem: Pins zeigen nach unten: wenn die Pins nach unten Zeigen und von der Konturanalyse nicht erkannt werden, steht das Bild auf dem Kopf da es nur nach oben an die Bildgröße angepasst wird.
-Überlegung: Pins müssen irgendwie erkannt werden
+#### Weiterentwicklung:
+
+- Konturanalyse mit Kontrasterhöhung eher semi-erfolgreich.
+- Rotationswinkel mit `if angle > 45: angle -= 90` angleichen funktioniert.
+- Konturanalyse mit SVM funktioniert besser.
+- Binärbild aus SVM wird direkt für die Konturanalyse verwendet, d.h. keine threshold mehr.
+- Rotation und Verschiebung rausnehmen funktioniert.
+
+#### Weitere Probleme und Lösungsansätze:
+
+- Da auf einigen Bildern die Pins nicht erkannt werden, werden Grenzwerte für die Bildgröße bestimmt, mit denen sich das aus der Kontur ergebende Bild angepasst wird.
+- Einige Konturen sind noch unsauber wegen Erkennungsproblemen am Rand.
+- Fallunterscheidung für Erkennung mit Rand und ohne abhängig von der Konturgröße.
+- Pins zeigen nach unten: Wenn die Pins nach unten zeigen und von der Konturanalyse nicht erkannt werden, steht das Bild auf dem Kopf, da es nur nach oben an die Bildgröße angepasst wird. Überlegung: Pins müssen irgendwie erkannt werden.
