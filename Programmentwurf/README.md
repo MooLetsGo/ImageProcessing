@@ -5,5 +5,6 @@ Das generateTrainingdata Programm verwendet die aktuellste Cutout Funktion um ei
 Anwendung des generateTrainingdata Programms:
 1. Pfade an eigene Umgebung anpassen
 2. Programm starten
+3. Hoffen, dass alles funktioniert
 
 In der ToDo.txt stehen Sachen die noch nicht funktionieren :( bzw. was noch gemacht werden muss  
