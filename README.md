@@ -1,8 +1,8 @@
-Dokumntation Bildverabeitung Gruppe: Konrad, Thesing, Gütermann
+Dokumentation Bildverabeitung Gruppe: Konrad, Thesing, Gütermann
 
-Bei der Abgabe sind kommentierte Vorgänger-Programme von uns dabei an denen man den Arbeitsverlauf beobachten Konturenanalyse
+Bei der Abgabe sind kommentierte Vorgänger-Programme von uns dabei an denen man den Arbeitsverlauf beobachten kann
 
-Zusammendassend:
+Zusammenfassend:
 
 1.
 Erstellung des Binärblid zur Konturenanalyse mit cv2.threshold
@@ -13,11 +13,9 @@ Rotieren
 Probleme: nicht bei allen Bilder wurden die richtigen Konturen erfasst bzw. falsches Rechteck; Rotation zur falschen Seite
 Lösungsansatz: Konturanalyse verbessern mit Kontrasrterhöhung oder SVM; Rotationswinkel angleichen
 
-
 2.
 Konturanalyse mit Kontrasterhöung eher semi erfolgreich
 Rotationswinkel mit if angle > 45: angle -= 90 angleichen funktioniert
-
 
 3.
 Konturanalyse mit SVM funktioniert besser
