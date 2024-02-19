@@ -1,4 +1,3 @@
--Variablennamen passend umbenennen
 -Lösung für umgedrehte pcb Bilder (anomaly Bilder 40,41,46,47) (passende Rotation/ passender Ausschnitt)
 -Lösung für reingezoomte Bilder (anomaly Bilder 53-59) (passender Ausschnitt/ pinExtra Anpassung)
 -Lösung für PCB mit weißen Kratzern (anomaly Bild 92)
