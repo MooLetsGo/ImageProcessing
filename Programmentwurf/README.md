@@ -1,4 +1,4 @@
-# Dokumentation der Prüfungsaufgabe
+# Dokumentation der Prüfungsaufgabe von Matthias Gütermann, David Thesing und Moritz Konrad
 
 ## CutoutFunktionen
 
