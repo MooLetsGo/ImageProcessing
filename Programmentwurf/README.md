@@ -1,6 +1,6 @@
 # Dokumentation der Prüfungsaufgabe von Matthias Gütermann, David Thesing und Moritz Konrad
 
-## CutoutFunktionen
+### CutoutFunktionen
 
 Im Ordner "CutoutFunktionen" liegen die Programme, die zur Erstellung des passenden PCB-Bildausschnitts verwendet werden.
 
@@ -14,7 +14,7 @@ Das Programm "generateTrainingdata" nutzt die aktuellste Cutout-Funktion, um ein
 
 In der "ToDo.txt" stehen Punkte, die noch nicht funktionieren.
 
-#### Grobe Beschreibung des Entwicklungsverlaufs / Dokumentation:
+### Grobe Beschreibung des Entwicklungsverlaufs / Dokumentation:
 
 Anahnd der Programme in verschiedenen Versionen die hier abliegen, kann der Arbeitsverlauf nachvollzogen werden.
 
